@@ -59,18 +59,18 @@ test('maxcdn', function(t) {
     });
 
     // post
-    m.post('path', 'data', function(err, data) {
-        t.equal(data.foo, 'bar');
-    });
+    //m.post('path', 'data', function(err, data) {
+        //t.equal(data.foo, 'bar');
+    //});
 
     // delete
-    m.delete('path', function(err, data) {
-        t.equal(data.foo, 'bar');
-    });
-    m.delete(['path1','path2'], function(err, data) {
-        t.equal(data['path1'].foo, 'bar');
-        t.equal(data['path2'].foo, 'bar');
-    });
+    //m.delete('path', function(err, data) {
+        //t.equal(data.foo, 'bar');
+    //});
+    //m.delete(['path1','path2'], function(err, data) {
+        //t.equal(data['path1'].foo, 'bar');
+        //t.equal(data['path2'].foo, 'bar');
+    //});
 
     t.end();
 });

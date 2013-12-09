@@ -15,8 +15,8 @@ $ npm install github jmervine/node-maxcdn
 
 ### Not working:
 
-* post
-* delete
+* post - fails with error, getting the same error with Ruby gem.
+* delete - unable to write automated tests without post working.
 
 ### TODO:
 
