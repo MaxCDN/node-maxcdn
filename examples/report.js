@@ -8,21 +8,31 @@ if (!process.env.ALIAS || !process.env.KEY || !process.env.SECRET) {
 }
 
 var maxcdn = new MaxCDN(process.env.ALIAS, process.env.KEY, process.env.SECRET);
-var url = path.join('reports', 'stats.json', 'daily');
 
-function callback(error, results) {
-    if (error) {
-        console.trace(error);
+maxcdn.get('zones/pull.json', function(e, r) {
+    if (e) {
+        console.trace(e);
         return;
     }
-    console.dir(results);
-}
-
-maxcdn.delete(url, callback);
+    r.data.pullzones.forEach(function(zone) {
+        console.log('Zone %s Summary', zone.id);
+        var url = path.join('reports', zone.id, 'stats.json', 'daily');
+        maxcdn.get(url, function(ee, rr) {
+            if (ee) {
+                console.trace(ee);
+                return;
+            }
+            var summary = rr.data.summary;
+            Object.keys(summary).forEach(function(key) {
+                console.log('- %s: %s', key, summary[key]);
+            });
+        });
+    });
+});
 
 function usage() {
     console.log('');
-    console.log('Usage: report.js ZONEID');
+    console.log('Usage: report.js');
     console.log('');
     console.log('  Credentials:');
     console.log('');
@@ -31,7 +41,7 @@ function usage() {
     console.log('  $ export ALIAS=comapny_alias');
     console.log('  $ export KEY=consumer_key');
     console.log('  $ export SECRET=consumer_secret');
-    console.log('  $ ./report.js 121212 /master.css /another.css');
+    console.log('  $ ./report.js');
     console.log('');
     console.log('  Or by passing them to the script.');
     console.log('');
