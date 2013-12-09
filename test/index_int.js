@@ -66,6 +66,7 @@ test('maxcdn', function(t) {
         var id = res.data.pullzones[0].id;
         maxcdn.delete('zones/pull.json/'+id+'/cache', function(err, res) {
             t.notOk(err, 'delete without error');
+            console.dir(res);
             t.equal(res.code, 200, 'delete successful');
         });
 
