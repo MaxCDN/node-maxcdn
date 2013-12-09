@@ -1,4 +1,4 @@
-setup: clean
+setup:
 	npm cache clean
 	npm install
 
