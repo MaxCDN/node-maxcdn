@@ -2,6 +2,12 @@
 
 Work in progress.
 
+### Install this Alpha version
+
+```
+$ npm install github jmervine/node-maxcdn
+```
+
 ### Working:
 
 * get
