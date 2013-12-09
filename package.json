@@ -1,10 +1,11 @@
 {
-  "name": "node-maxcdn",
-  "version": "0.0.0",
+  "name": "maxcdn",
+  "version": "0.0.1",
   "description": "MaxCDN API for Node.js",
   "main": "index.js",
   "scripts": {
-    "test": "make test"
+    "test": "make test",
+    "int": "make int"
   },
   "repository": {
     "type": "git",
