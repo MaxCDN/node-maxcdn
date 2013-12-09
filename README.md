@@ -20,6 +20,7 @@ $ npm install github jmervine/node-maxcdn
 
 ### TODO:
 
+* documentation!
 * post
     * functionality
     * tests
