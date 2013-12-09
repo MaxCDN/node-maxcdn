@@ -7,19 +7,15 @@ if (!process.env.ALIAS || !process.env.KEY || !process.env.SECRET || process.arg
     usage();
 }
 
-var maxcdn = new MaxCDN({
-    alias:  process.env.ALIAS,
-    key:    process.env.KEY,
-    secret: process.env.SECRET
-});
+var maxcdn = new MaxCDN(process.env.ALIAS, process.env.KEY, process.env.SECRET);
 
 var zoneId = process.argv[2];
 var files  = process.argv.slice(3, process.argv.length);
 var url     = path.join('zones', 'pull.json', zoneId, 'cache');
 
 function callback(error, results) {
-    if (err) {
-        console.trace(err);
+    if (error) {
+        console.trace(error);
         return;
     }
     console.log('Cache successfully cleared!');
@@ -28,6 +24,7 @@ function callback(error, results) {
 if (files == 0) {
     maxcdn.delete(url, callback);
 } else {
+    files = { files: files };
     maxcdn.delete(url, files, callback);
 }
 

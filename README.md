@@ -14,11 +14,7 @@ $ npm install github jmervine/node-maxcdn
 
 ```
 var MaxCDN = require('maxcdn');
-var maxcdn = new MaxCDN({
-    alias:  'COMPANY_ALIAS',
-    key:    'CONSUMER_KEY',
-    secret: 'CONSUMER_SECRET'
-});
+var maxcdn = new MaxCDN('COMPANY_ALIAS', 'CONSUMER_KEY', 'CONSUMER_SECRET');
 ```
 
 #### `maxcdn.get`
