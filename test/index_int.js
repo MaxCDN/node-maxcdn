@@ -57,19 +57,32 @@ test('maxcdn', function(t) {
         //t.ok(res.data.id, 'post with response');
         //maxcdn.delete('users.json/'+res.data.id, function(err, res) {
             //t.notOk(err, 'delete without error');
-            //t.equal(res.status, 200, 'delete successfull');
+            //t.equal(res.status, 200, 'delete successful');
         //});
     //});
 
-    //var time4 = bumpTime(4);
-    //maxcdn.post('zones/pull.json', { "name": time4, "url": 'http://example.com' }, function(err, res) {
-        //t.notOk(err, 'post (js object) without error');
-        //t.ok(res.data.id, 'post with response');
-        //maxcdn.delete('zones/pull.json/'+res.data.id, function(err, res) {
-            //t.notOk(err, 'delete without error');
-            //t.equal(res.status, 200, 'delete successfull');
-        //});
-    //});
+    // delete
+    maxcdn.get('zones/pull.json', function(err, res) {
+        var id = res.data.pullzones[0].id;
+        maxcdn.delete('zones/pull.json/'+id+'/cache', function(err, res) {
+            t.notOk(err, 'delete without error');
+            console.dir(res);
+            t.equal(res.code, 200, 'delete successful');
+        });
+
+        // delete multiple
+        maxcdn.get('reports/popularfiles.json', function(err, res) {
+            var file1 = res.data.popularfiles.shift().uri;
+            var file2 = res.data.popularfiles.shift().uri;
+            maxcdn.delete('zones/pull.json/'+id+'/cache',
+                    { "files": [file1, file2] },
+                function(err, res) {
+                    t.notOk(err, 'delete without error');
+                    t.equal(res[0].code, 200, 'delete file one successful');
+                    t.equal(res[1].code, 200, 'delete file two successful');
+            });
+        });
+    });
 
     maxcdn.get('reports/stats.json/hourly', function(err, res) {
         t.notOk(err, 'get report without error');

@@ -1,6 +1,7 @@
 var OAuth       = require('oauth').OAuth;
 var path        = require('path');
 var querystring = require('querystring');
+var async       = require('async');
 
 function MaxCDN(alias, key, secret) {
     if (typeof alias !== 'string') {
@@ -54,34 +55,36 @@ MaxCDN.prototype.post = function post(url, data, callback) {
     //this.oauth.post(this._makeUrl(url), '', '', this._makeQuerystring(data), this._parse(callback));
 };
 
-MaxCDN.prototype.delete = function del(url, callback) {
-    throw new Error('post is not implemented at this time due to destination API issues');
-    //var that = this;
-    //function del(u, cb) {
-        //that.oauth.delete(that._makeUrl(u), '', '', that._parse(cb));
-    //}
-
-    //if (typeof url === 'string') {
-        //del(url, callback);
-    //} else {
-        //var results = {};
-        //var errors  = {};
-        //var count   = 0;
-        //url.forEach(function(u) {
-            //del(u, function(err, data) {
-                //if (err) {
-                    //errors[u] = err;
-                //} else {
-                    //results[u] = data;
-                //}
-
-                //// am I done?
-                //if (++count === url.length) {
-                    //callback(errors, results);
-                //}
-            //});
-        //});
-    //}
+MaxCDN.prototype.delete = function del(url, files, callback) {
+    var that = this;
+    function dd(u) {
+        return function(cb) {
+            that.oauth.delete(that._makeUrl(u), '', '', that._parse(
+                function(err, data) { cb(err, data); }
+            ));
+        };
+    }
+    var runs = [];
+    if (typeof files === 'function') {
+        callback = files;
+        files = null;
+    }
+    if (files !== null) {
+        if (!files.files) {
+            throw new Error('invalid files object');
+        }
+        files.files.forEach(function(file) {
+            runs.push(dd(url + '?' + that._makeQuerystring({files: file})));
+        });
+    }
+    if (runs == 0) {
+        that.oauth.delete(that._makeUrl(url), '', '', that._parse(callback));
+    } else {
+        async.parallel(runs, function(err, res) {
+            if (err && err != 0) { throw new Error(err); }
+            callback(err, res);
+        });
+    }
 };
 
 MaxCDN.prototype._parse = function _parse(callback) {
