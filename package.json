@@ -1,6 +1,6 @@
 {
   "name": "node-maxcdn",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "MaxCDN API for Node.js",
   "main": "index.js",
   "scripts": {
@@ -11,7 +11,7 @@
     "url": "https://github.com/jmervine/node-maxcdn.git"
   },
   "keywords": [
-    "cdn"
+    "cdn", "maxcdn", "netdna", "oauth"
   ],
   "author": "Joshua P. Mervine <joshua@mervine.net>",
   "license": "MIT",
