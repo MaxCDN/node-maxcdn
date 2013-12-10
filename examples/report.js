@@ -7,32 +7,57 @@ if (!process.env.ALIAS || !process.env.KEY || !process.env.SECRET) {
     usage();
 }
 
+var valid_reports = [ 'daily', 'hourly', 'monthly', '' ];
+var report = '';
+if (process.argv[2]) {
+    var arg = process.argv[2].trim();
+    if (valid_reports.indexOf(arg) !== -1) {
+        if (arg !== '') {
+            report = '';
+        } else {
+            report = '/'+arg;
+        }
+    }
+}
+
 var maxcdn = new MaxCDN(process.env.ALIAS, process.env.KEY, process.env.SECRET);
 
-maxcdn.get('zones/pull.json', function(e, r) {
-    if (e) {
-        console.trace(e);
-        return;
-    }
-    r.data.pullzones.forEach(function(zone) {
-        console.log('Zone %s Summary', zone.id);
-        var url = path.join('reports', zone.id, 'stats.json', 'daily');
-        maxcdn.get(url, function(ee, rr) {
-            if (ee) {
-                console.trace(ee);
-                return;
-            }
-            var summary = rr.data.summary;
-            Object.keys(summary).forEach(function(key) {
-                console.log('- %s: %s', key, summary[key]);
+function get(url, callback) {
+    maxcdn.get(url, function(error, result) {
+        if (error) {
+            console.trace(error);
+            process.exit(1);
+        }
+        callback(result.data);
+    });
+}
+
+get('zones/pull.json', function(zones) {
+    zones.pullzones.forEach(function(zone) {
+        console.log('Zone report for: %s (%s)', zone.name, zone.url);
+        get('reports/'+zone.id+'/stats.json'+report, function(report) {
+            Object.keys(report.summary).forEach(function(key) {
+                console.log('- %s: %s', key, report.summary[key]);
+            });
+            get('reports/'+zone.id+'/popularfiles.json?page_size=10', function(popular) {
+                console.log('');
+                console.log('Popular files:');
+                popular.popularfiles.forEach(function(file) {
+                    console.log('- url: %s', file.uri);
+                    console.log('  - hits: %s', file.hit);
+                    console.log('  - size: %s', file.size);
+                });
             });
         });
+        console.log('');
     });
 });
 
 function usage() {
     console.log('');
-    console.log('Usage: report.js');
+    console.log('Usage: report.js [hourly|daily|monthly]');
+    console.log('');
+    console.log('  Report types only cover summary.');
     console.log('');
     console.log('  Credentials:');
     console.log('');
