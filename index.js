@@ -38,6 +38,21 @@ MaxCDN.prototype._makeQuerystring = function _makeQuerystring(params) {
     return params;
 };
 
+MaxCDN.prototype._makeObject = function _makeObject(params) {
+    if (typeof params === 'string') {
+        try {
+            return JSON.parse(params);
+        } catch (e) {
+            try {
+                return querystring.parse(params);
+            } catch (ee) {
+                throw new Error('invalid params string');
+            }
+        }
+    }
+    return params;
+};
+
 MaxCDN.prototype._makeUrl = function _makeURL(p) {
     return this.API_SERVER + path.join('/', this.alias, p);
 };
@@ -51,8 +66,7 @@ MaxCDN.prototype.put = function put(url, data, callback) {
 };
 
 MaxCDN.prototype.post = function post(url, data, callback) {
-    throw new Error('post is not implemented at this time due to destination API issues');
-    //this.oauth.post(this._makeUrl(url), '', '', this._makeQuerystring(data), this._parse(callback));
+    this.oauth.post(this._makeUrl(url), '', '', this._makeObject(data), this._parse(callback));
 };
 
 MaxCDN.prototype.delete = function del(url, files, callback) {
