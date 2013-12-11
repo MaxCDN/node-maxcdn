@@ -7,6 +7,9 @@ if (!process.env.ALIAS || !process.env.KEY || !process.env.SECRET) {
     usage();
 }
 
+/***
+ * Pull and validate arguments for report type.
+ */
 var valid_reports = [ 'daily', 'hourly', 'monthly', '' ];
 var report = '';
 if (process.argv[2]) {
@@ -22,26 +25,61 @@ if (process.argv[2]) {
 
 var maxcdn = new MaxCDN(process.env.ALIAS, process.env.KEY, process.env.SECRET);
 
+/***
+ * Wrap maxcdn.get to abstract generic error handling.
+ */
 function get(url, callback) {
     maxcdn.get(url, function(error, result) {
+
+        /***
+         * Error handling.
+         */
         if (error) {
             console.trace(error);
             process.exit(1);
         }
+
+        /***
+         * Callback on success.
+         */
         callback(result.data);
+
     });
 }
 
+/***
+ * First, get pullzone id's.
+ */
 get('zones/pull.json', function(zones) {
+
+    /***
+     * Iterate through pull zones.
+     */
     zones.pullzones.forEach(function(zone) {
         console.log('Zone report for: %s (%s)', zone.name, zone.url);
+
+        /***
+         * Second, get summary.
+         */
         get('reports/'+zone.id+'/stats.json'+report, function(report) {
+
+            /***
+             * Format summary.
+             */
             Object.keys(report.summary).forEach(function(key) {
                 console.log('- %s: %s', key, report.summary[key]);
             });
+
+            /***
+             * Third, get popularfiles... limit 10.
+             */
             get('reports/'+zone.id+'/popularfiles.json?page_size=10', function(popular) {
                 console.log('');
                 console.log('Popular files:');
+
+                /***
+                 * Iterate over popular files and format data.
+                 */
                 popular.popularfiles.forEach(function(file) {
                     console.log('- url: %s', file.uri);
                     console.log('  - hits: %s', file.hit);
@@ -53,6 +91,9 @@ get('zones/pull.json', function(zones) {
     });
 });
 
+/***
+ * Usage
+ */
 function usage() {
     console.log('');
     console.log('Usage: report.js [hourly|daily|monthly]');

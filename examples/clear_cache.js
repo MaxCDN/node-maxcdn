@@ -9,25 +9,55 @@ if (!process.env.ALIAS || !process.env.KEY || !process.env.SECRET || process.arg
 
 var maxcdn = new MaxCDN(process.env.ALIAS, process.env.KEY, process.env.SECRET);
 
+/***
+ * Pull Zone ID from CLI arguments.
+ */
 var zoneId = process.argv[2];
+
+/***
+ * Optionally, pull files from CLI arguments.
+ */
 var files  = process.argv.slice(3, process.argv.length);
+
+/***
+ * URL to MaxCDN API.
+ */
 var url     = path.join('zones', 'pull.json', zoneId, 'cache');
 
+/***
+ * Define callback for OAuth requests to MaxCDN.
+ */
 function callback(error, results) {
+    /***
+     * Error handling.
+     */
     if (error) {
         console.trace(error);
         return;
     }
+
+    /***
+     * Report success.
+     */
     console.log('Cache successfully cleared!');
 }
 
 if (files == 0) {
+    /***
+     * If no files are passed, purge full cache.
+     */
     maxcdn.delete(url, callback);
 } else {
+    /***
+     * Otherwise, only purge files specified.
+     */
     files = { files: files };
     maxcdn.delete(url, files, callback);
 }
 
+/***
+ * Usage
+ */
 function usage() {
     console.log('');
     console.log('Usage: clear_cache.js ZONEID [FILES]');
