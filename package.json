@@ -21,7 +21,6 @@
   },
   "dependencies": {
     "oauth": "~0.9.10",
-    "querystring": "~0.2.0",
     "async": "~0.2.9"
   },
   "devDependencies": {
