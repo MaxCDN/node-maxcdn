@@ -82,6 +82,11 @@ test('maxcdn', function(t) {
         t.equal(data[1].foo, 'bar');
     });
 
+    m.delete('path', { files: ['path1','path2'] }, 1, function(err, data) {
+        t.equal(data[0].foo, 'bar');
+        t.equal(data[1].foo, 'bar');
+    });
+
     t.end();
 });
 

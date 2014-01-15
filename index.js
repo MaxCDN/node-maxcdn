@@ -69,7 +69,18 @@ MaxCDN.prototype.post = function post(url, data, callback) {
     this.oauth.post(this._makeUrl(url), '', '', this._makeObject(data), this._parse(callback));
 };
 
-MaxCDN.prototype.delete = function del(url, files, callback) {
+MaxCDN.prototype.delete = function del(url, files, limit, callback) {
+    var default_limit = 25;
+    if (typeof limit === 'function') {
+        callback = limit;
+        limit = default_limit;
+    }
+    if (typeof files === 'function') {
+        callback = files;
+        limit = default_limit;
+        files = null;
+    }
+
     var that = this;
     function dd(u) {
         return function(cb) {
@@ -79,10 +90,6 @@ MaxCDN.prototype.delete = function del(url, files, callback) {
         };
     }
     var runs = [];
-    if (typeof files === 'function') {
-        callback = files;
-        files = null;
-    }
     if (files !== null) {
         if (!files.files) {
             throw new Error('invalid files object');
@@ -94,7 +101,7 @@ MaxCDN.prototype.delete = function del(url, files, callback) {
     if (runs == 0) {
         that.oauth.delete(that._makeUrl(url), '', '', that._parse(callback));
     } else {
-        async.parallel(runs, function(err, res) {
+        async.parallelLimit(runs, limit, function(err, res) {
             callback(err, res);
         });
     }
