@@ -95,7 +95,6 @@ MaxCDN.prototype.delete = function del(url, files, callback) {
         that.oauth.delete(that._makeUrl(url), '', '', that._parse(callback));
     } else {
         async.parallel(runs, function(err, res) {
-            if (err && err != 0) { throw new Error(err); }
             callback(err, res);
         });
     }
