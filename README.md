@@ -5,7 +5,7 @@ MaxCDN API for Node.js
 ## Install
 
 ```
-$ npm install github jmervine/node-maxcdn
+$ npm install node-maxcdn
 ```
 
 ## Usage
