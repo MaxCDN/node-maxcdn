@@ -17,7 +17,7 @@
   "author": "Joshua P. Mervine <joshua@mervine.net>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/jmervine/node-maxcdn/issues"
+    "url": "https://github.com/MaxCDN/node-maxcdn/issues"
   },
   "dependencies": {
     "oauth": "~0.9.10",
