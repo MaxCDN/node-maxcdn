@@ -58,21 +58,6 @@ maxcdn.post('zones/pull.json', { name: 'testname', url: 'http://www.example.com'
     }
     console.dir(results);
 });
-
-// specific files
-var files = { files: [ '/master.css', '/another.css' ] };
-maxcdn.delete('zones/pull.json/'+zoneId+'/cache', files, function(err, results) {
-    if (err) {
-        console.trace(err);
-        return;
-    }
-    if (results[0].code === 200) {
-        console.log('SUCCESS: %s', files.files[0]);
-    }
-    if (results[1].code === 200) {
-        console.log('SUCCESS: %s', files.files[1]);
-    }
-});
 ```
 
 #### `maxcdn.delete`
