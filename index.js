@@ -21,7 +21,7 @@ function MaxCDN(alias, key, secret) {
 
     this.oauth = new OAuth(
         this.API_SERVER + path.join('/', 'oauth', 'request_token'),
-        this.API_SERVER + path.join('/', 'oauth', 'access_toekn'),
+        this.API_SERVER + path.join('/', 'oauth', 'access_token'),
         key, secret, '1.0', null, 'HMAC-SHA1'
     );
 
