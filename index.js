@@ -62,49 +62,25 @@ MaxCDN.prototype.get = function get(url, callback) {
 };
 
 MaxCDN.prototype.put = function put(url, data, callback) {
-    this.oauth.put(this._makeUrl(url), '', '', this._makeQuerystring(data), this._parse(callback));
+    this.oauth.put(this._makeUrl(url), '', '', this._makeObject(data), this._parse(callback));
 };
 
 MaxCDN.prototype.post = function post(url, data, callback) {
     this.oauth.post(this._makeUrl(url), '', '', this._makeObject(data), this._parse(callback));
 };
 
-MaxCDN.prototype.delete = function del(url, files, limit, callback) {
-    var default_limit = 25;
-    if (typeof limit === 'function') {
-        callback = limit;
-        limit = default_limit;
-    }
+MaxCDN.prototype.delete = function del(url, files, callback) {
+    files = files || null;
     if (typeof files === 'function') {
         callback = files;
-        limit = default_limit;
         files = null;
     }
 
-    var that = this;
-    function dd(u) {
-        return function(cb) {
-            that.oauth.delete(that._makeUrl(u), '', '', that._parse(
-                function(err, data) { cb(err, data); }
-            ));
-        };
+    if (files && Array.isArray(files)) {
+        files = this._makeObject({ files: files });
     }
-    var runs = [];
-    if (files !== null) {
-        if (!files.files) {
-            throw new Error('invalid files object');
-        }
-        files.files.forEach(function(file) {
-            runs.push(dd(url + '?' + that._makeQuerystring({files: file})));
-        });
-    }
-    if (runs == 0) {
-        that.oauth.delete(that._makeUrl(url), '', '', that._parse(callback));
-    } else {
-        async.parallelLimit(runs, limit, function(err, res) {
-            callback(err, res);
-        });
-    }
+
+    this.oauth.delete(this._makeUrl(url), '', '', files, this._parse(callback));
 };
 
 MaxCDN.prototype._parse = function _parse(callback) {

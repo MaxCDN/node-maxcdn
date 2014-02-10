@@ -20,7 +20,7 @@
     "url": "https://github.com/MaxCDN/node-maxcdn/issues"
   },
   "dependencies": {
-    "oauth": "~0.9.10",
+    "oauth": "git+https://github.com/jmervine/node-oauth.git",
     "async": "~0.2.9"
   },
   "devDependencies": {

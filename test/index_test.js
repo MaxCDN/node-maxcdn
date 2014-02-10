@@ -3,7 +3,13 @@ var test = require('tape');
 // OAuth stub.
 function oaStub() {
     var callback = arguments[arguments.length-1];
-    callback(null, '{ "foo": "bar" }', '');
+
+    var res = JSON.stringify({
+        foo: "bar",
+        arguments: arguments
+    });
+
+    callback(null, res, '');
 }
 
 var OAuth = require('oauth').OAuth;
@@ -61,30 +67,34 @@ test('maxcdn', function(t) {
     // get
     m.get('path', function(err, data) {
         t.equal(data.foo, 'bar');
+        t.equal(data.arguments[0], 'https://rws.netdna.com/alias/path');
     });
 
     // put
-    m.put('path', 'data', function(err, data) {
+    m.put('path', { data: 'data' }, function(err, data) {
         t.equal(data.foo, 'bar');
+        t.equal(data.arguments[0], 'https://rws.netdna.com/alias/path');
+        t.deepEqual(data.arguments[3], { data: 'data' });
     });
 
     // post
-    m.post('path', 'data', function(err, data) {
+    m.post('path', { data: 'data' }, function(err, data) {
         t.equal(data.foo, 'bar');
+        t.equal(data.arguments[0], 'https://rws.netdna.com/alias/path');
+        t.deepEqual(data.arguments[3], { data: 'data' });
     });
 
     // delete
     m.delete('path', function(err, data) {
         t.equal(data.foo, 'bar');
-    });
-    m.delete('path', { files: ['path1','path2'] }, function(err, data) {
-        t.equal(data[0].foo, 'bar');
-        t.equal(data[1].foo, 'bar');
+        t.equal(data.arguments[0], 'https://rws.netdna.com/alias/path');
+        t.notOk(data.arguments[3]);
     });
 
-    m.delete('path', { files: ['path1','path2'] }, 1, function(err, data) {
-        t.equal(data[0].foo, 'bar');
-        t.equal(data[1].foo, 'bar');
+    m.delete('path', { files: ['path1','path2'] }, function(err, data) {
+        t.equal(data.foo, 'bar');
+        t.equal(data.arguments[0], 'https://rws.netdna.com/alias/path');
+        t.deepEqual(data.arguments[3], { files: [ 'path1', 'path2' ] });
     });
 
     t.end();
