@@ -62,7 +62,7 @@ MaxCDN.prototype.get = function get(url, callback) {
 };
 
 MaxCDN.prototype.put = function put(url, data, callback) {
-    this.oauth.put(this._makeUrl(url), '', '', this._makeObject(data), this._parse(callback));
+    this.oauth.put(this._makeUrl(url), '', '', this._makeQuerystring(data), this._parse(callback));
 };
 
 MaxCDN.prototype.post = function post(url, data, callback) {
@@ -70,17 +70,38 @@ MaxCDN.prototype.post = function post(url, data, callback) {
 };
 
 MaxCDN.prototype.delete = function del(url, files, callback) {
-    files = files || null;
     if (typeof files === 'function') {
         callback = files;
         files = null;
     }
 
-    if (files && Array.isArray(files)) {
-        files = this._makeObject({ files: files });
+    /***
+     * This is a workaround for OAuth not supporting sending
+     * data (like a post) through the delete method, and not
+     * querystring.stringify not supporting using index based
+     * naming of params.
+     *
+     * Delete wants "files[0]=foo.css&files[1]=bar.css"
+     ***/
+    function stringify(arr) {
+        var f = '';
+        for (var i = 0; i < arr.length; i++) {
+            f += 'files[' + i + ']=' + querystring.escape(arr[i])
+            if (i !== arr.length-1) f += '&';
+        }
+        return f;
     }
 
-    this.oauth.delete(this._makeUrl(url), '', '', files, this._parse(callback));
+    if (typeof files === 'string') {
+        files = "files="+string;
+    } else if (Array.isArray(files)) {
+        files = stringify(files);
+    } else if (files && files.files) {
+        files = stringify(files.files);
+    }
+    if (files) url += '?' + files;
+
+    this.oauth.delete(this._makeUrl(url), '', '', this._parse(callback));
 };
 
 MaxCDN.prototype._parse = function _parse(callback) {

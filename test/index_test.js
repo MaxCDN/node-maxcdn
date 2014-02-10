@@ -31,70 +31,80 @@ test('maxcdn', function(t) {
     });
 
     var m = new MaxCDN('alias', 'key', 'secret');
-    t.equal(m.alias  , 'alias');
-    t.equal(m.key    , 'key');
-    t.equal(m.secret , 'secret');
+    t.equal(m.alias  , 'alias',  'setup:: alias');
+    t.equal(m.key    , 'key',    'setup:: key');
+    t.equal(m.secret , 'secret', 'setup:: secret');
 
     // _makeUrl
-    t.equal(m._makeUrl('foobar'), 'https://rws.netdna.com/alias/foobar');
+    t.equal(m._makeUrl('foobar'), 'https://rws.netdna.com/alias/foobar', '_makeURl');
 
     // _makeQuerystring
-    t.equal(m._makeQuerystring({ foo: 'bar' }), 'foo=bar');
-    t.equal(m._makeQuerystring('{ "foo": "bar" }'), 'foo=bar');
-    t.equal(m._makeQuerystring('foo=bar'), 'foo=bar');
+    t.equal(m._makeQuerystring({ foo: 'bar' }), 'foo=bar', '_makeQuerystring:: object');
+    t.equal(m._makeQuerystring('{ "foo": "bar" }'), 'foo=bar', '_makeQuerystring:: json');
+    t.equal(m._makeQuerystring('foo=bar'), 'foo=bar', '_makeQuerystring:: querystring');
 
     // _makeObject
-    t.equal(m._makeObject({ foo: 'bar' }).foo, 'bar');
-    t.equal(m._makeObject('{ "foo": "bar" }').foo, 'bar');
-    t.equal(m._makeObject('foo=bar').foo, 'bar');
+    t.equal(m._makeObject({ foo: 'bar' }).foo, 'bar', '_makeObject:: object');
+    t.equal(m._makeObject('{ "foo": "bar" }').foo, 'bar', '_makeObject:: json');
+    t.equal(m._makeObject('foo=bar').foo, 'bar', '_makeQuery:: querystring');
 
     // _parse
     m._parse(function(err, data) {
-        t.ok(err, 'should have err');
-        t.ok(data, 'should have data');
+        t.ok(err, '_parse:: string w/ err');
+        t.ok(data, '_parse:: string w/ data');
     })(null, 'foobar', '');
 
     m._parse(function(err, data) {
-        t.ok(err, 'should have err');
-        t.ok(data, 'should have data');
+        t.ok(err, '_parse:: json w/ err');
+        t.ok(data, '_parse:: json w/ data');
     })(new Error(), '{ "foo": "bar" }', '');
 
     m._parse(function(err, data) {
-        t.notOk(err, 'should not have err');
-        t.ok(data, 'should have data');
+        t.notOk(err, '_parse:: json w/o error');
+        t.ok(data, '_parse:: json w/ data');
     })(null, '{ "foo": "bar" }', '');
 
     // get
     m.get('path', function(err, data) {
-        t.equal(data.foo, 'bar');
-        t.equal(data.arguments[0], 'https://rws.netdna.com/alias/path');
+        t.equal(data.foo, 'bar', 'get w/ data');
+        t.equal(data.arguments[0], 'https://rws.netdna.com/alias/path', 'get w/ path');
     });
 
     // put
     m.put('path', { data: 'data' }, function(err, data) {
-        t.equal(data.foo, 'bar');
-        t.equal(data.arguments[0], 'https://rws.netdna.com/alias/path');
-        t.deepEqual(data.arguments[3], { data: 'data' });
+        t.equal(data.foo, 'bar', 'put w/ data');
+        t.equal(data.arguments[0], 'https://rws.netdna.com/alias/path', 'put w/ path');
+        t.deepEqual(data.arguments[3], 'data=data', 'put sends data');
     });
 
     // post
     m.post('path', { data: 'data' }, function(err, data) {
-        t.equal(data.foo, 'bar');
-        t.equal(data.arguments[0], 'https://rws.netdna.com/alias/path');
-        t.deepEqual(data.arguments[3], { data: 'data' });
+        t.equal(data.foo, 'bar', 'post w/ data');
+        t.equal(data.arguments[0], 'https://rws.netdna.com/alias/path', 'post w/ path');
+        t.deepEqual(data.arguments[3], { data: 'data' }, 'post sends data');
     });
 
     // delete
     m.delete('path', function(err, data) {
-        t.equal(data.foo, 'bar');
-        t.equal(data.arguments[0], 'https://rws.netdna.com/alias/path');
-        t.notOk(data.arguments[3]);
+        t.equal(data.foo, 'bar', 'delete w/ data');
+        t.equal(data.arguments[0], 'https://rws.netdna.com/alias/path', 'delete w/ path');
+        t.notOk(data.arguments[3], 'delete sends data');
+    });
+
+    m.delete('path', ['path1','path2'], function(err, data) {
+        t.equal(data.foo, 'bar', 'delete (via Array) w/ data');
+        t.equal(data.arguments[0],
+                'https://rws.netdna.com/alias/path?files[0]=path1&files[1]=path2',
+                'delete (via Array) w/ path');
+        t.notOk(data.arguments[3], 'delete (via Array) sends data');
     });
 
     m.delete('path', { files: ['path1','path2'] }, function(err, data) {
-        t.equal(data.foo, 'bar');
-        t.equal(data.arguments[0], 'https://rws.netdna.com/alias/path');
-        t.deepEqual(data.arguments[3], { files: [ 'path1', 'path2' ] });
+        t.equal(data.foo, 'bar', 'delete (via Object) w/ data');
+        t.equal(data.arguments[0],
+                'https://rws.netdna.com/alias/path?files[0]=path1&files[1]=path2',
+                'delete (via Object) w/ path');
+        t.notOk(data.arguments[3], 'delete (via Object) sends data');
     });
 
     t.end();
