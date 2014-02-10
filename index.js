@@ -1,7 +1,6 @@
 var OAuth       = require('oauth').OAuth;
 var path        = require('path');
 var querystring = require('querystring');
-var async       = require('async');
 
 function MaxCDN(alias, key, secret) {
     if (typeof alias !== 'string') {
