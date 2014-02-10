@@ -1,7 +1,6 @@
 var OAuth       = require('oauth').OAuth;
 var path        = require('path');
 var querystring = require('querystring');
-var async       = require('async');
 
 function MaxCDN(alias, key, secret) {
     if (typeof alias !== 'string') {
@@ -69,42 +68,39 @@ MaxCDN.prototype.post = function post(url, data, callback) {
     this.oauth.post(this._makeUrl(url), '', '', this._makeObject(data), this._parse(callback));
 };
 
-MaxCDN.prototype.delete = function del(url, files, limit, callback) {
-    var default_limit = 25;
-    if (typeof limit === 'function') {
-        callback = limit;
-        limit = default_limit;
-    }
+MaxCDN.prototype.delete = function del(url, files, callback) {
     if (typeof files === 'function') {
         callback = files;
-        limit = default_limit;
         files = null;
     }
 
-    var that = this;
-    function dd(u) {
-        return function(cb) {
-            that.oauth.delete(that._makeUrl(u), '', '', that._parse(
-                function(err, data) { cb(err, data); }
-            ));
-        };
-    }
-    var runs = [];
-    if (files !== null) {
-        if (!files.files) {
-            throw new Error('invalid files object');
+    /***
+     * This is a workaround for OAuth not supporting sending
+     * data (like a post) through the delete method, and not
+     * querystring.stringify not supporting using index based
+     * naming of params.
+     *
+     * Delete wants "files[0]=foo.css&files[1]=bar.css"
+     ***/
+    function stringify(arr) {
+        var f = '';
+        for (var i = 0; i < arr.length; i++) {
+            f += 'files[' + i + ']=' + querystring.escape(arr[i])
+            if (i !== arr.length-1) f += '&';
         }
-        files.files.forEach(function(file) {
-            runs.push(dd(url + '?' + that._makeQuerystring({files: file})));
-        });
+        return f;
     }
-    if (runs == 0) {
-        that.oauth.delete(that._makeUrl(url), '', '', that._parse(callback));
-    } else {
-        async.parallelLimit(runs, limit, function(err, res) {
-            callback(err, res);
-        });
+
+    if (typeof files === 'string') {
+        files = "files="+string;
+    } else if (Array.isArray(files)) {
+        files = stringify(files);
+    } else if (files && files.files) {
+        files = stringify(files.files);
     }
+    if (files) url += '?' + files;
+
+    this.oauth.delete(this._makeUrl(url), '', '', this._parse(callback));
 };
 
 MaxCDN.prototype._parse = function _parse(callback) {

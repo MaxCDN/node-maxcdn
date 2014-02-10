@@ -1,11 +1,12 @@
 {
   "name": "maxcdn",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "MaxCDN API for Node.js",
   "main": "index.js",
   "scripts": {
     "test": "tape ./test/*_test.js",
-    "int": "tape ./test/*_int.js"
+    "int": "tape ./test/*_int.js",
+    "benchmark": "node ./test/benchmark.js"
   },
   "repository": {
     "type": "git",
@@ -20,10 +21,10 @@
     "url": "https://github.com/MaxCDN/node-maxcdn/issues"
   },
   "dependencies": {
-    "oauth": "~0.9.10",
-    "async": "~0.2.9"
+    "oauth": "~0.9.11"
   },
   "devDependencies": {
-    "tape": "~2.3.0"
+    "tape": "~2.3.0",
+    "async": "~0.2.9"
   }
 }
