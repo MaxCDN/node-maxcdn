@@ -7,12 +7,13 @@ var maxcdn = new MaxCDN(process.env.ALIAS, process.env.KEY, process.env.SECRET);
  * Get account information.
  */
 maxcdn.get('account.json', function(err, results) {
+    console.log('GET account.json')
     if (err) {
         // error handling
         console.trace(err);
     } else {
         // print results
-        console.log('account.json\n%s\n',results);
+        console.dir(results);
     }
 });
 
@@ -20,23 +21,24 @@ maxcdn.get('account.json', function(err, results) {
  * Get account address information.
  */
 maxcdn.get('account.json/address', function(err, results) {
+    console.log('account.json/address');
     if (err) {
         // error handling
         console.trace(err);
     } else {
         // print results
-        console.log('account.json/address\n%s\n',results);
+        console.dir(results);
     }
 });
 
 maxcdn.get('reports/stats.json/hourly', function(err, results) {
+    console.log('reports/stats.json/hourly summary');
     if (err) {
         // error handling
         console.trace(err);
     } else {
         // print results
-        console.log('reports/stats.json/hourly summary\n%s\n',
-                        results.data.summart);
+        console.dir(results.data.summary);
     }
 });
 
