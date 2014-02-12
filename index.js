@@ -18,11 +18,17 @@ function MaxCDN(alias, key, secret) {
     this.key        = key;
     this.secret     = secret;
 
+    // requestUrl, accessUrl, consumerKey, consumerSecret, version, authorize_callback, signatureMethod, nonceSize, customHeaders
+
+    headers = {
+        "Accept" : "*/*",                         // << from OAuth default headers.
+        "Connection" : "close",                   // << from OAuth default headers.
+        "User-Agent" : "Node MaxCDN API Client"}; // << custom User-Agent
+
     this.oauth = new OAuth(
         this.API_SERVER + path.join('/', 'oauth', 'request_token'),
         this.API_SERVER + path.join('/', 'oauth', 'access_token'),
-        key, secret, '1.0', null, 'HMAC-SHA1'
-    );
+        key, secret, '1.0', null, 'HMAC-SHA1', null, headers);
 
     return this;
 }
