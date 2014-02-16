@@ -1,3 +1,6 @@
+var http  = require('http-debug').http;
+var https = require('http-debug').https;
+
 var test = require('tape');
 
 var MaxCDN = require('../index');
@@ -7,6 +10,11 @@ var time = Date.now().toString();
 
 function bumpTime(n) {
     return time+'_'+n;
+}
+
+if (process.env.DEBUG) {
+    http.debug = 2;
+    https.debug = 2;
 }
 
 test('put', function(t) {

@@ -13,7 +13,11 @@
     "url": "https://github.com/maxcdn/node-maxcdn.git"
   },
   "keywords": [
-    "cdn", "maxcdn", "netdna", "oauth", "Content Delivery Network"
+    "cdn",
+    "maxcdn",
+    "netdna",
+    "oauth",
+    "Content Delivery Network"
   ],
   "author": "Joshua P. Mervine <joshua@mervine.net>",
   "license": "MIT",
@@ -25,6 +29,7 @@
   },
   "devDependencies": {
     "tape": "~2.3.0",
-    "async": "~0.2.9"
+    "async": "~0.2.9",
+    "http-debug": "~0.1.0"
   }
 }

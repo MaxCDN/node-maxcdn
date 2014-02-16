@@ -1,7 +1,15 @@
+var http  = require('http-debug').http;
+var https = require('http-debug').https;
+
 var test = require('tape');
 
 var MaxCDN = require('../index');
 var maxcdn = new MaxCDN(process.env.ALIAS, process.env.KEY, process.env.SECRET);
+
+if (process.env.DEBUG) {
+    http.debug = 2;
+    https.debug = 2;
+}
 
 test('delete', function(t) {
     maxcdn.get('zones/pull.json', function(err, res) {
