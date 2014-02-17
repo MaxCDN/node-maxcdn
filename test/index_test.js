@@ -60,18 +60,20 @@ test('maxcdn', function(t) {
     })(new Error(), '{ "foo": "bar" }', '');
 
     m._parse(function(err, data) {
-        t.notOk(err, '_parse:: json w/o error');
+        t.error(err, '_parse:: no error');
         t.ok(data, '_parse:: json w/ data');
     })(null, '{ "foo": "bar" }', '');
 
     // get
     m.get('path', function(err, data) {
+        t.error(err, 'get w/o error');
         t.equal(data.foo, 'bar', 'get w/ data');
         t.equal(data.arguments[0], 'https://rws.netdna.com/alias/path', 'get w/ path');
     });
 
     // put
     m.put('path', { data: 'data' }, function(err, data) {
+        t.error(err, 'put w/o error');
         t.equal(data.foo, 'bar', 'put w/ data');
         t.equal(data.arguments[0], 'https://rws.netdna.com/alias/path', 'put w/ path');
         t.deepEqual(data.arguments[3], 'data=data', 'put sends data');
@@ -79,6 +81,7 @@ test('maxcdn', function(t) {
 
     // post
     m.post('path', { data: 'data' }, function(err, data) {
+        t.error(err, 'post w/o error');
         t.equal(data.foo, 'bar', 'post w/ data');
         t.equal(data.arguments[0], 'https://rws.netdna.com/alias/path', 'post w/ path');
         t.deepEqual(data.arguments[3], { data: 'data' }, 'post sends data');
@@ -86,12 +89,14 @@ test('maxcdn', function(t) {
 
     // delete
     m.delete('path', function(err, data) {
+        t.error(err, 'delete w/o error');
         t.equal(data.foo, 'bar', 'delete w/ data');
         t.equal(data.arguments[0], 'https://rws.netdna.com/alias/path', 'delete w/ path');
         t.notOk(data.arguments[3], 'delete sends data');
     });
 
     m.delete('path', ['path1','path2'], function(err, data) {
+        t.error(err, 'delete (via Array) w/o error');
         t.equal(data.foo, 'bar', 'delete (via Array) w/ data');
         t.equal(data.arguments[0],
                 'https://rws.netdna.com/alias/path?files[0]=path1&files[1]=path2',
@@ -100,6 +105,7 @@ test('maxcdn', function(t) {
     });
 
     m.delete('path', { files: ['path1','path2'] }, function(err, data) {
+        t.error(err, 'delete (via Object) w/o error');
         t.equal(data.foo, 'bar', 'delete (via Object) w/ data');
         t.equal(data.arguments[0],
                 'https://rws.netdna.com/alias/path?files[0]=path1&files[1]=path2',

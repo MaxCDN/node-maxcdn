@@ -18,8 +18,6 @@ function MaxCDN(alias, key, secret) {
     this.key        = key;
     this.secret     = secret;
 
-    // requestUrl, accessUrl, consumerKey, consumerSecret, version, authorize_callback, signatureMethod, nonceSize, customHeaders
-
     headers = {
         "Accept" : "*/*",                         // << from OAuth default headers.
         "Connection" : "close",                   // << from OAuth default headers.

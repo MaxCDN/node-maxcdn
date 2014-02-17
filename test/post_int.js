@@ -19,10 +19,10 @@ test('post', function(t) {
         url: 'http://www.example.com'
     };
     maxcdn.post('zones/pull.json', zone, function(err, res) {
-        t.notOk(err, 'post (js object) without error');
+        t.error(err, 'post (js object) without error');
         t.ok(res.data.pullzone.id, 'post with response');
         maxcdn.delete('zones/pull.json/'+res.data.pullzone.id, function(eerr, rres) {
-            t.notOk(eerr, 'delete without error');
+            t.error(eerr, 'delete without error');
             t.equal(rres.code, 200, 'delete successful');
         });
     });

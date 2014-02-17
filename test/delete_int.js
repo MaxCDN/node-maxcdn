@@ -15,7 +15,7 @@ test('delete', function(t) {
     maxcdn.get('zones/pull.json', function(err, res) {
         var id = res.data.pullzones[0].id;
         maxcdn.delete('zones/pull.json/'+id+'/cache', function(err, res) {
-            t.notOk(err, 'delete without error');
+            t.error(err, 'delete w/o error');
             t.equal(res.code, 200, 'delete successful');
         });
 
@@ -25,13 +25,13 @@ test('delete', function(t) {
             var file2 = res.data.popularfiles.shift().uri;
             maxcdn.delete('zones/pull.json/'+id+'/cache', [file1, file2],
                 function(err, res) {
-                    t.notOk(err, 'delete without error');
-                    t.equal(res.code, 200, 'delete successful');
+                    t.error(err, 'delete via Array w/o error');
+                    t.equal(res.code, 200, 'delete via Array successful');
             });
             maxcdn.delete('zones/pull.json/'+id+'/cache', { "files": [file1, file2] },
                 function(err, res) {
-                    t.notOk(err, 'delete without error');
-                    t.equal(res.code, 200, 'delete successful');
+                    t.error(err, 'delete via Object w/o error');
+                    t.equal(res.code, 200, 'delete via Object successful');
             });
         });
     });

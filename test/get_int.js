@@ -22,7 +22,7 @@ test('get', function(t) {
         var key = (endPoint.indexOf('/') !== -1) ? endPoint.split('/')[1] : endPoint.split('.json')[0];
 
         maxcdn.get(endPoint, function(err, res) {
-            t.notOk(err, 'get '+endPoint+' without error');
+            t.error(err, 'get '+endPoint+' without error');
             t.ok(res.data[key], 'get '+endPoint+' with data');
         });
     });
