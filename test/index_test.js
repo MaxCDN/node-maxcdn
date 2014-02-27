@@ -95,6 +95,15 @@ test('maxcdn', function(t) {
         t.notOk(data.arguments[3], 'delete sends data');
     });
 
+    m.delete('path', 'path1', function(err, data) {
+        t.error(err, 'delete (via Array) w/o error');
+        t.equal(data.foo, 'bar', 'delete (via Array) w/ data');
+        t.equal(data.arguments[0],
+                'https://rws.netdna.com/alias/path?files=path1',
+                'delete (via Array) w/ path');
+        t.notOk(data.arguments[3], 'delete (via Array) sends data');
+    });
+
     m.delete('path', ['path1','path2'], function(err, data) {
         t.error(err, 'delete (via Array) w/o error');
         t.equal(data.foo, 'bar', 'delete (via Array) w/ data');
@@ -118,6 +127,15 @@ test('maxcdn', function(t) {
         t.equal(data.foo, 'bar', 'del w/ data');
         t.equal(data.arguments[0], 'https://rws.netdna.com/alias/path', 'del w/ path');
         t.notOk(data.arguments[3], 'del sends data');
+    });
+
+    m.del('path', 'path1', function(err, data) {
+        t.error(err, 'delete (via Array) w/o error');
+        t.equal(data.foo, 'bar', 'delete (via Array) w/ data');
+        t.equal(data.arguments[0],
+                'https://rws.netdna.com/alias/path?files=path1',
+                'delete (via Array) w/ path');
+        t.notOk(data.arguments[3], 'delete (via Array) sends data');
     });
 
     m.del('path', ['path1','path2'], function(err, data) {

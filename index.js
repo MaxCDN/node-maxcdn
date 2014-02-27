@@ -96,7 +96,7 @@ function del(url, files, callback) {
     }
 
     if (typeof files === 'string') {
-        files = "files="+string;
+        files = "files="+files;
     } else if (Array.isArray(files)) {
         files = stringify(files);
     } else if (files && files.files) {

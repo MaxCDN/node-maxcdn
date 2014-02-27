@@ -94,11 +94,6 @@ maxcdn.del('zones/pull.json/'+zoneId+'/cache', files, function(err, results) {
 });
 ```
 
-#### Not Implemented
-
-* post - fails with error, getting the same error with Ruby gem.
-
-
 ## Running Tests
 
 #### Unit Tests
