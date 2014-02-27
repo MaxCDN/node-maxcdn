@@ -72,7 +72,7 @@ MaxCDN.prototype.post = function post(url, data, callback) {
     this.oauth.post(this._makeUrl(url), '', '', this._makeObject(data), this._parse(callback));
 };
 
-MaxCDN.prototype.delete = function del(url, files, callback) {
+function del(url, files, callback) {
     if (typeof files === 'function') {
         callback = files;
         files = null;
@@ -106,6 +106,10 @@ MaxCDN.prototype.delete = function del(url, files, callback) {
 
     this.oauth.delete(this._makeUrl(url), '', '', this._parse(callback));
 };
+
+MaxCDN.prototype.delete = del;
+MaxCDN.prototype.del = del;
+
 
 MaxCDN.prototype._parse = function _parse(callback) {
     return function(err, data, response) {

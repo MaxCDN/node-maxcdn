@@ -60,13 +60,15 @@ maxcdn.post('zones/pull.json', { name: 'testname', url: 'http://www.example.com'
 });
 ```
 
-#### `maxcdn.delete`
+#### `maxcdn.del`
+
+> Has alias of `maxcdn.delete`.
 
 ```
 var zoneId = '121212';
 
 // full cache
-maxcdn.delete('zones/pull.json/'+zoneId+'/cache', function(err, results) {
+maxcdn.del('zones/pull.json/'+zoneId+'/cache', function(err, results) {
     if (err) {
         console.trace(err);
         return;
@@ -78,7 +80,7 @@ maxcdn.delete('zones/pull.json/'+zoneId+'/cache', function(err, results) {
 
 // specific files
 var files = { files: [ '/master.css', '/another.css' ] };
-maxcdn.delete('zones/pull.json/'+zoneId+'/cache', files, function(err, results) {
+maxcdn.del('zones/pull.json/'+zoneId+'/cache', files, function(err, results) {
     if (err) {
         console.trace(err);
         return;
