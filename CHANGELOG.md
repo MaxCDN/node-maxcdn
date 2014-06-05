@@ -1,5 +1,9 @@
 # Change Log
 
+### v0.1.5
+
+- Making URLs use / instead of \ on Windows; thanks [timdp](https://github.com/timdp).
+
 ### v0.1.4
 
 - Adding alias for `maxcdn.del`.
