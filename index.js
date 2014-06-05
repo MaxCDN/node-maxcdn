@@ -1,5 +1,4 @@
 var OAuth       = require('oauth').OAuth;
-var path        = require('path');
 var querystring = require('querystring');
 
 function MaxCDN(alias, key, secret) {
@@ -24,8 +23,8 @@ function MaxCDN(alias, key, secret) {
         "User-Agent" : "Node MaxCDN API Client"}; // << custom User-Agent
 
     this.oauth = new OAuth(
-        this.API_SERVER + path.join('/', 'oauth', 'request_token'),
-        this.API_SERVER + path.join('/', 'oauth', 'access_token'),
+        this.API_SERVER + '/oauth/request_token',
+        this.API_SERVER + '/oauth/access_token',
         key, secret, '1.0', null, 'HMAC-SHA1', null, headers);
 
     return this;
@@ -57,7 +56,7 @@ MaxCDN.prototype._makeObject = function _makeObject(params) {
 };
 
 MaxCDN.prototype._makeUrl = function _makeURL(p) {
-    return this.API_SERVER + path.join('/', this.alias, p);
+    return this.API_SERVER + '/' + this.alias + '/' + p;
 };
 
 MaxCDN.prototype.get = function get(url, callback) {
