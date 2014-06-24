@@ -13,7 +13,7 @@ if (process.env.DEBUG) {
 
 test('delete', function(t) {
     maxcdn.get('zones/pull.json', function(err, res) {
-        var id = res.data.pullzones[0].id;
+        var id = res.data.pullzones[res.data.pullzones.length-1].id;
         maxcdn.delete('zones/pull.json/'+id+'/cache', function(err, res) {
             t.error(err, 'delete w/o error');
             t.equal(res.code, 200, 'delete successful');
