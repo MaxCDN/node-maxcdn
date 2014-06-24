@@ -11,6 +11,9 @@ test:
 int:
 	./node_modules/.bin/tape ./test/*_int.js
 
+benchmarks:
+	node ./test/benchmark.js
+
 integration: int
 
 .PHONY: test
