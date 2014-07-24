@@ -28,7 +28,7 @@ maxcdn.get('reports/stats.json/daily', function(err, results) {
         console.trace(err);
         return;
     }
-    console.dir(resultS);
+    console.dir(results);
 });
 ```
 
@@ -44,7 +44,7 @@ maxcdn.put('account.json/address', updates, function(err, results) {
         console.trace(err);
         return;
     }
-    console.dir(resultS);
+    console.dir(results);
 });
 ```
 
