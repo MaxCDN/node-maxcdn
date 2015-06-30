@@ -12,7 +12,7 @@ function MaxCDN(alias, key, secret) {
         throw new Error('consumer secret missing or not a string');
     }
 
-    this.API_SERVER = 'https://rws.netdna.com';
+    this.API_SERVER = 'https://rws.maxcdn.com';
     this.alias      = alias;
     this.key        = key;
     this.secret     = secret;
