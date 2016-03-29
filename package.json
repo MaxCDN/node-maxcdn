@@ -1,6 +1,6 @@
 {
   "name": "maxcdn",
-  "version": "0.1.6",
+  "version": "0.2.0",
   "description": "MaxCDN API for Node.js",
   "main": "index.js",
   "scripts": {

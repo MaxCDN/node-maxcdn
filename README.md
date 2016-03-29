@@ -4,7 +4,7 @@ MaxCDN API for Node.js
 
 [![Build Status](https://travis-ci.org/MaxCDN/node-maxcdn.png?branch=master)](https://travis-ci.org/MaxCDN/node-maxcdn) &nbsp; [![Dependancy Status](https://david-dm.org/MaxCDN/node-maxcdn.png)](https://david-dm.org/MaxCDN/node-maxcdn) &nbsp; [![NPM Version](https://badge.fury.io/js/maxcdn.png)](https://badge.fury.io/js/maxcdn) &nbsp;  <iframe src="http://jmervine.github.io/npm-downloads-badge/badge.html?module=maxcdn&name=false" allowtransparency="true" frameborder="0" scrolling="0" width="125" height="20" style="vertical-align: bottom"></iframe>
 
-> Note: Unit tests have been run agaist both Node.js v0.12.0 and io.js v1.1.0, in addtion to standard Node.js 0.10.x version, all passed.
+> Note: Unit tests have been run agaist latest 4.x and 5.x versions of Node.js.
 
 ## Install
 
@@ -17,8 +17,7 @@ $ npm install maxcdn
 #### Initialize
 
 ```
-var MaxCDN = require('maxcdn');
-var maxcdn = new MaxCDN('COMPANY_ALIAS', 'CONSUMER_KEY', 'CONSUMER_SECRET');
+var maxcdn = require('maxcdn').create('COMPANY_ALIAS', 'CONSUMER_KEY', 'CONSUMER_SECRET');
 ```
 
 #### `maxcdn.get`

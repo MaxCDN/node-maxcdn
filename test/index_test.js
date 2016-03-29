@@ -18,9 +18,24 @@ OAuth.prototype.put    = oaStub;
 OAuth.prototype.post   = oaStub;
 OAuth.prototype.delete = oaStub;
 
-var MaxCDN = require('../index');
+test('maxcdn.create', function(t) {
+    var maxcdn = require('../index');
 
-test('maxcdn', function(t) {
+    // setup
+    t.throws(function() {
+        maxcdn.create();
+    });
+
+    t.doesNotThrow(function() {
+        maxcdn.create('alias', 'key', 'secret');
+    });
+
+    t.end();
+});
+
+test('MaxCDN', function(t) {
+    var MaxCDN = require('../index');
+
     // setup
     t.throws(function() {
         new MaxCDN();

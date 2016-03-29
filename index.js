@@ -1,6 +1,10 @@
 var OAuth       = require('oauth').OAuth;
 var querystring = require('querystring');
 
+function create(alias, key, secret) {
+    return new MaxCDN(alias, key, secret);
+}
+
 function MaxCDN(alias, key, secret) {
     if (typeof alias !== 'string') {
         throw new Error('company alias missing or not a string');
@@ -125,4 +129,5 @@ MaxCDN.prototype._parse = function _parse(callback) {
 };
 
 module.exports = MaxCDN;
+module.exports.create = create;
 // vim: ft=javascript ai sw=4 sts=4 et:
