@@ -65,14 +65,14 @@ test('MaxCDN', function(t) {
 
     // _parse
     m._parse(function(err, data) {
-        t.ok(err, '_parse:: string w/ err');
-        t.ok(data, '_parse:: string w/ data');
+        t.equal('SyntaxError', err.name, '_parse:: parse error');
+        t.notOk(data, '_parse:: not data on parse error');
     })(null, 'foobar', '');
 
     m._parse(function(err, data) {
         t.ok(err, '_parse:: json w/ err');
         t.ok(data, '_parse:: json w/ data');
-    })(new Error(), '{ "foo": "bar" }', '');
+    })(new Error('connection error'), '{ "foo": "bar" }', '');
 
     m._parse(function(err, data) {
         t.error(err, '_parse:: no error');
