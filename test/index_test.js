@@ -72,7 +72,7 @@ test('MaxCDN', function(t) {
     m._parse(function(err, data) {
         t.ok(err, '_parse:: json w/ err');
         t.ok(data, '_parse:: json w/ data');
-    })(new Error('connection error'), '{ "foo": "bar" }', '');
+    })(new Error(), '{ "foo": "bar" }', '');
 
     m._parse(function(err, data) {
         t.error(err, '_parse:: no error');
