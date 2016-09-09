@@ -116,11 +116,17 @@ MaxCDN.prototype.del = del;
 
 MaxCDN.prototype._parse = function _parse(callback) {
     return function(err, data, response) {
-        try {
-            data = JSON.parse(data);
-        } catch(e) {
-            return callback(e);
+        if (err === undefined) {
+            try {
+                data = JSON.parse(data);
+            } catch(e) {
+                return callback(e, {
+                    statusCode: 500,
+                    data: 'Invalid JSON from MaxCDN\'s API.'
+                });
+            }
         }
+
         return callback(err, data);
     };
 };

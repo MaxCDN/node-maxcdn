@@ -9,7 +9,7 @@ function oaStub() {
         arguments: arguments
     });
 
-    callback(null, res, '');
+    callback(undefined, res, '');
 }
 
 var OAuth = require('oauth').OAuth;
@@ -66,8 +66,8 @@ test('MaxCDN', function(t) {
     // _parse
     m._parse(function(err, data) {
         t.equal('SyntaxError', err.name, '_parse:: parse error');
-        t.notOk(data, '_parse:: not data on parse error');
-    })(null, 'foobar', '');
+        t.equal(data.statusCode, 500);
+    })(undefined, 'foobar', '');
 
     m._parse(function(err, data) {
         t.ok(err, '_parse:: json w/ err');
@@ -77,7 +77,7 @@ test('MaxCDN', function(t) {
     m._parse(function(err, data) {
         t.error(err, '_parse:: no error');
         t.ok(data, '_parse:: json w/ data');
-    })(null, '{ "foo": "bar" }', '');
+    })(undefined, '{ "foo": "bar" }', '');
 
     // get
     m.get('path', function(err, data) {
