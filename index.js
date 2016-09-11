@@ -116,7 +116,7 @@ MaxCDN.prototype.del = del;
 
 MaxCDN.prototype._parse = function _parse(callback) {
     return function(err, data, response) {
-        if (err === undefined) {
+        if (!err) { // catch null || undefined
             try {
                 data = JSON.parse(data);
             } catch(e) {
