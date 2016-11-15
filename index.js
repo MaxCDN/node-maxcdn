@@ -68,7 +68,7 @@ MaxCDN.prototype.get = function get(url, callback) {
 };
 
 MaxCDN.prototype.put = function put(url, data, callback) {
-    this.oauth.put(this._makeUrl(url), '', '', this._makeQuerystring(data), this._parse(callback));
+    this.oauth.put(this._makeUrl(url), '', '', this._makeObject(data), this._parse(callback));
 };
 
 MaxCDN.prototype.post = function post(url, data, callback) {
