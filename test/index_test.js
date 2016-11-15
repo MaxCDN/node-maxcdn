@@ -91,7 +91,7 @@ test('MaxCDN', function(t) {
         t.error(err, 'put w/o error');
         t.equal(data.foo, 'bar', 'put w/ data');
         t.equal(data.arguments[0], 'https://rws.maxcdn.com/alias/path', 'put w/ path');
-        t.deepEqual(data.arguments[3], 'data=data', 'put sends data');
+        t.deepEqual(data.arguments[3], { data: 'data' }, 'put sends data');
     });
 
     // post
