@@ -15,7 +15,11 @@ test('get', function(t) {
     [ 'account.json',
         'account.json/address',
         'users.json',
-        'zones.json' ]
+        'zones.json', 
+        '/account.json',
+        '/account.json/address',
+        '/users.json',
+        '/zones.json' ]
     .forEach(function(endPoint) {
 
         // far from perfect but handles the above paths
