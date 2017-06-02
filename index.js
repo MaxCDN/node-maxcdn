@@ -60,7 +60,7 @@ MaxCDN.prototype._makeObject = function _makeObject(params) {
 };
 
 MaxCDN.prototype._makeUrl = function _makeURL(p) {
-    return this.API_SERVER + '/' + this.alias + '/' + p;
+    return this.API_SERVER + '/' + this.alias + '/' + p.replace(/^[/]/, '');
 };
 
 MaxCDN.prototype.get = function get(url, callback) {

@@ -52,6 +52,8 @@ test('MaxCDN', function(t) {
 
     // _makeUrl
     t.equal(m._makeUrl('foobar'), 'https://rws.maxcdn.com/alias/foobar', '_makeURl');
+    // Support leading slash
+    t.equal(m._makeUrl('/foobar'), 'https://rws.maxcdn.com/alias/foobar', '_makeURl');
 
     // _makeQuerystring
     t.equal(m._makeQuerystring({ foo: 'bar' }), 'foo=bar', '_makeQuerystring:: object');

@@ -13,9 +13,13 @@ if (process.env.DEBUG) {
 
 test('get', function(t) {
     [ 'account.json',
-        'account.json/address',
-        'users.json',
-        'zones.json' ]
+    'account.json/address',
+    'users.json',
+    'zones.json', 
+    '/account.json',
+    '/account.json/address',
+    '/users.json',
+    '/zones.json' ]
     .forEach(function(endPoint) {
 
         // far from perfect but handles the above paths
@@ -27,11 +31,11 @@ test('get', function(t) {
         });
     });
 
-    maxcdn.get("v3/reporting/logs.json", function(err, res) {
-        t.error(err, 'get v3/reporting/logs.json without error');
-        t.ok(res.next_page_key, 'get v3/reporting/logs.json with data');
-    });
-    t.end();
+maxcdn.get("v3/reporting/logs.json", function(err, res) {
+    t.error(err, 'get v3/reporting/logs.json without error');
+    t.ok(res.next_page_key, 'get v3/reporting/logs.json with data');
+});
+t.end();
 });
 
 // vim: ft=javascript ai sw=4 sts=4 et:
